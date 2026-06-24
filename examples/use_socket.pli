@@ -21,11 +21,8 @@
    dcl host       char(256);
    dcl port       fixed bin(31);
    dcl request    char(2048) varying;
-   dcl socket_fd  socket_fd_t;
-   dcl bytes_sent size_t;
+   dcl (bytes_sent, bytes_received) size_t;
    dcl response   char(2048);
-   dcl bytes_received         fixed bin(31);
-   dcl buf char(2048);
    dcl sock like socket_t;
 
    host = '127.0.0.1';
