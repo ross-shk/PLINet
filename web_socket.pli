@@ -15,8 +15,7 @@
  * limitations under the License.
  */
 
- web_socket: package exports(accept, socket, listen, bind, connect, 
-    close, send, receive);
+ web_socket: package exports(connect);
 
  %include type_defs;
 
