@@ -58,4 +58,5 @@
 
  dcl close entry (
    socket_fd_t  /* socket descriptor */
- ) returns(fixed bin(31));  /* error code */
+ ) returns(fixed bin(31))  /* error code */
+   options(linkage(system)) external('close');

@@ -147,14 +147,4 @@
     return(n);
   end receive;
 
-   dcl c_close entry (
-       socket_fd_t  /* socket descriptor */
-   ) returns(fixed bin(31))  /* error code */
-     options(linkage(system)) external('close');
-
- close: proc(sock_fd) returns(fixed bin(31));
-   dcl sock_fd socket_fd_t;
-   return(c_close(sock_fd));
- end close;
-
  end web_socket;
