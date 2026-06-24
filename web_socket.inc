@@ -17,6 +17,9 @@
 
  %include type_defs;
 
+ dcl get_errno entry () returns(fixed bin(31))
+    options(linkage(system)) external('get_errno_value');
+
  dcl shutdown entry (
    socket_fd_t,   /* socket descriptor */
    shut_how_t     /* 0=read, 1=write, 2=both */

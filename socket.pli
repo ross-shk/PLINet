@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-socket: package exports(new_connect, socket_send, socket_receive, 
+ socket: package exports(new_connect, socket_send, socket_receive, 
    close_socket, shutdown_socket, socket_errno);
 
  %include web_socket;
- %include socket_errors;
+
+ dcl socket_error condition;
 
  new_connect: proc(sock, h, p) returns(size_t);
    dcl sock like socket_t;
