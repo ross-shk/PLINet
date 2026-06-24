@@ -52,9 +52,11 @@
 
  dcl receive entry (
    socket_fd_t,  /* socket descriptor */
-   char(*),      /* response */
+   pointer,     /* buffer */
+   size_t,       /* length */
    flags_t       /* flags */
- ) returns(size_t);  /* total bytes received */
+ ) returns(size_t)  /* num of bytes received  */
+   options(linkage(system)) external('recv');
 
  dcl close entry (
    socket_fd_t  /* socket descriptor */

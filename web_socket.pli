@@ -126,25 +126,5 @@
     end;
     return(total_sent);
   end send;
- 
-   dcl c_recv entry (
-       socket_fd_t,  /* socket descriptor */
-       pointer,     /* buffer */
-       size_t,       /* length */
-       flags_t       /* flags */
-   ) returns(size_t)  /* num of bytes received */
-     options(linkage(system)) external('recv');
-
-  receive: proc(sock_fd, response, flags) returns(size_t);
-    dcl sock_fd  socket_fd_t;
-    dcl response char(*);
-    dcl flags    flags_t;
-    dcl n        fixed bin(31);
-
-    n = c_recv(sock_fd, addr(response), length(response), flags);
-    if n > 0 then
-      response = substr(response, 1, n);
-    return(n);
-  end receive;
 
  end web_socket;

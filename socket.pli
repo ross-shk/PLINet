@@ -61,12 +61,15 @@ socket: package exports(new_connect, socket_send, socket_receive,
 
    dcl bytes_received fixed bin(31) init(0);
 
-   bytes_received = receive(sock.fd, response, flags);
+   bytes_received = receive(sock.fd, addr(response), 
+      length(response), flags);
    if bytes_received < 0 then
      do;
        signal condition(socket_error);
        return(bytes_received);
      end;
+   if bytes_received > 0 then 
+      response = substr(response, 1, bytes_received);
    return(bytes_received);
  end socket_receive; 
 
