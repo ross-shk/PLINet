@@ -53,7 +53,8 @@
  dcl connect entry (
    pointer,     /* host */
    port_t,      /* port */
-   socket_fd_t  /* socket file descriptor */
+   socket_fd_t,  /* socket file descriptor */
+   fixed bin(31) /* address family */
  ) returns(fixed bin(31))  /* socket descriptor */
    options(linkage(system)) external('connect_to_host');
 

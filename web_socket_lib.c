@@ -55,11 +55,11 @@ int get_errno_value(void) {
   return errno;
 }
 
-int connect_to_host(char *host, int port, int socket_fd) {
+int connect_to_host(char *host, int port, int socket_fd, int af) {
   struct sockaddr_in addr = {0};
-  addr.sin_family = AF_INET;
+  addr.sin_family = af;
   addr.sin_port = htons(port);
-  inet_pton(AF_INET, host, &addr.sin_addr);
+  inet_pton(af, host, &addr.sin_addr);
 
   return connect(socket_fd, (struct sockaddr*)&addr, sizeof(addr)) ;
 }

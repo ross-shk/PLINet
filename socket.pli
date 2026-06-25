@@ -46,7 +46,7 @@
    dcl c_host char(length(host));
    c_host = substr(host, 1, length(host)) || '00'x;
 
-   status = connect(addr(c_host), port, sock._fd);
+   status = connect(addr(c_host), port, sock._fd, sock._family);
    if status < 0 then
      do;
        signal condition(socket_error);
