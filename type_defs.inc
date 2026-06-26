@@ -37,7 +37,7 @@
        2 DGRAM  fixed bin(31) init(2),
        2 RAW    fixed bin(31) init(3);
 
- dcl 1 socket_t based,
+ dcl 1 socket_t aligned based,
        2 _fd        socket_fd_t,
        2 _host      char(256) init(''),
        2 _port      port_t init(0),
