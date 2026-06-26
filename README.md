@@ -16,12 +16,14 @@ A socket library for PL/I with a C bridge, object-oriented wrappers, and PL/I co
 ## Usage
 
 ```pli
- main: proc options(main);
+ main: procedure options(main);
  %include socket;
-   dcl request  char(2048) varying;
-   dcl response char(2048);
-   dcl bytes    size_t;
-   dcl sock     like socket_t;
+ 
+   declare
+     request  char(2048) varying,
+     response char(2048),
+     bytes    size_t,
+     sock     like socket_t;
 
    request =
        'GET / HTTP/1.1' || LINE_END ||
