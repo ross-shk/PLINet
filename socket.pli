@@ -26,8 +26,7 @@
    dcl (family, type, flag) fixed bin(31);
 
    sock._fd = socket(family, type, flag);
-   if sock._fd < 0 then 
-     do;
+   if sock._fd < 0 then do;
        signal condition(socket_error);
        return;
      end;
@@ -41,17 +40,18 @@
    dcl host char(*) varying;
    dcl port port_t;
    
-   dcl status fixed bin(31);
+   begin;
+     dcl status fixed bin(31);
+     dcl c_host char(length(host));
+     c_host = substr(host, 1, length(host)) || '00'x;
 
-   dcl c_host char(length(host));
-   c_host = substr(host, 1, length(host)) || '00'x;
-
-   status = connect(addr(c_host), port, sock._fd, sock._family);
-   if status < 0 then
-     do;
+     status = connect(addr(c_host), port, sock._fd, sock._family);
+     if status < 0 then do;
        signal condition(socket_error);
        return;
      end;
+   end;
+
    sock._host = host;
    sock._port = port; 
    sock._connected = '1'b; 
@@ -63,23 +63,25 @@
    dcl flags flags_t;
 
    dcl bytes_sent fixed bin(31) init(0);
-   dcl n size_t;
-   dcl slice char(length(request));
 
-   slice = request;
+   begin;
+     dcl n size_t;
+     dcl slice char(length(request));
 
-   do while(bytes_sent < length(request));
-     n = send(sock._fd, addr(slice) + bytes_sent,
-                 length(request) - bytes_sent, flags);
-     if n <= 0 then leave;
-     bytes_sent = bytes_sent + n;
+     slice = request;
+
+     do while(bytes_sent < length(request));
+       n = send(sock._fd, addr(slice) + bytes_sent,
+                   length(request) - bytes_sent, flags);
+       if n <= 0 then leave;
+       bytes_sent = bytes_sent + n;
+     end;
    end;
 
-   if bytes_sent < 0 then
-     do;
-       signal condition(socket_error);
-       return(bytes_sent);
-     end;
+   if bytes_sent < 0 then do;
+     signal condition(socket_error);
+     return(bytes_sent);
+   end;
    return(bytes_sent);
  end socket_send;
 
@@ -92,11 +94,10 @@
 
    bytes_received = receive(sock._fd, addr(response), 
       length(response), flags);
-   if bytes_received < 0 then
-     do;
-       signal condition(socket_error);
-       return(bytes_received);
-     end;
+   if bytes_received < 0 then do;
+     signal condition(socket_error);
+     return(bytes_received);
+   end;
    if bytes_received > 0 then 
       response = substr(response, 1, bytes_received);
    return(bytes_received);
@@ -108,11 +109,10 @@
    dcl err_code fixed bin(31) init(0);
 
    err_code = close(sock._fd);
-   if err_code < 0 then
-     do;
-       signal condition(socket_error);
-       return(err_code);
-     end;
+   if err_code < 0 then do;
+     signal condition(socket_error);
+     return(err_code);
+   end;
    return(err_code);
  end close_socket;
 
@@ -122,11 +122,10 @@
    dcl err fixed bin(31);
 
    err = shutdown(sock._fd, how);
-   if err < 0 then
-     do;
-       signal condition(socket_error);
-       return(err);
-     end;
+   if err < 0 then do;
+     signal condition(socket_error);
+     return(err);
+   end;
    return(err);
  end shutdown_socket;
 
