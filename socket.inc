@@ -60,8 +60,4 @@
    like socket_t,
    shut_how_t  /* 0=read, 1=write, 2=both */
  ) returns(fixed bin(31));
-
- dcl socket_errno entry (
-   like socket_t
- ) returns(fixed bin(31));
- 
+  
