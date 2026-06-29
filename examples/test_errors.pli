@@ -27,7 +27,7 @@
    dcl bytes      size_t;
 
    on condition(socket_error) begin;
-     put skip list('Socket error, errno =', oncode());
+     put skip list('Socket error, code =', oncode());
      goto done;
    end;
 
