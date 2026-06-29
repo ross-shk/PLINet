@@ -34,7 +34,7 @@ OUTPUT="${2:-$(basename "$SOURCE" .pli)}"
 INCDIR="-i../include"
 
 echo "=== Building C bridge ==="
-gcc -m32 -c ../source/web_socket_lib.c -o web_socket_lib.o
+gcc -m32 -c ../source/socket_bridge.c -o socket_bridge.o
 
 echo "=== Compiling library packages ==="
 plic -C -dELF -ew -O ../source/socket.pli      $INCDIR -o socket.o
@@ -46,7 +46,7 @@ plic -C -dELF -ew -O "$SOURCE" $INCDIR -o "${OUTPUT}.o"
 echo "=== Linking $OUTPUT ==="
 gcc -m32 -no-pie -z muldefs -Wl,-M -Wl,--oformat=elf32-i386 \
   -static-libgcc -nostartfiles -e main \
-  -o "$OUTPUT" "${OUTPUT}.o" web_socket.o web_socket_lib.o socket.o \
+  -o "$OUTPUT" "${OUTPUT}.o" socket_bridge.o socket.o \
   -lprf > "${OUTPUT}.map"
 
 echo "=== Build complete: $OUTPUT ==="

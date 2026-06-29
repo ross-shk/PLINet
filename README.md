@@ -7,11 +7,11 @@ A socket library for PL/I with a C bridge, object-oriented wrappers, and PL/I co
 | File | Purpose |
 |------|---------|
 | `type_defs.inc` | Named types (`socket_fd_t`, `port_t`, `buffer_t`, etc.) and the `socket_t` structure |
-| `web_socket.pli` / `.inc` | Thin wrappers around POSIX socket C functions |
+| `socket_bridge.inc` | C function external declarations (`socket`, `bind`, `listen`, ...) |
 | `socket.pli` / `.inc` | Object-oriented client socket methods (`socket_connect`, `socket_send`, `socket_receive`, `close_socket`, `shutdown_socket`, `socket_errno`) |
 | `server_socket.pli` / `.inc` | Server socket methods (`create_server`, `server_accept`, `server_error`) |
 | `socket_errors.inc` | `socket_error` condition and `get_errno` entry |
-| `web_socket_lib.c` | C bridge:, `default_accept`, `bind_to_port`, `connect_to_host`, `get_errno_value` |
+| `socket_bridge.c` | C bridge: `default_accept`, `bind_to_port`, `connect_to_host`, `get_errno_value` |
 
 ## Usage
 
@@ -59,10 +59,10 @@ Requires Iron Spring PL/I (`plic`), `gcc` with `-m32`, and `libprf` (32-bit).
  |  socket.pli / server_socket.pli          |
  |  (OO methods, error signaling)           |
  |──────────────────────────────────────────|
- |  web_socket.pli                           |
- |  (thin C wrappers)                       |
+ |  socket_bridge.inc                         |
+ |  (C function declarations)               |
  |──────────────────────────────────────────|
- |  web_socket_lib.c                         |
+ |  socket_bridge.c                           |
  |  (POSIX sockets / errno capture)         |
  `──────────────────────────────────────────'
 ```

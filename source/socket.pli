@@ -18,7 +18,7 @@
    socket_read, socket_write, close_socket, shutdown_socket, 
    new_socket);
 
- %include web_socket;
+ %include socket_bridge;
  %include socket_errors;
 
  new_socket: proc(sock, family, type, flag);
