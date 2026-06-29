@@ -133,27 +133,17 @@
  socket_read: proc(sock, buffer) returns(size_t);
    dcl sock like socket_t;
    dcl buffer char(*);
-
    dcl bytes_read size_t;
-   dcl total_bytes size_t init(0);
-   dcl slice_ptr pointer;
 
-   do until(bytes_read <= 0);
-      slice_ptr = addr(buffer) + total_bytes;
-      bytes_read = read(sock._fd, slice_ptr, 
-         length(buffer) - total_bytes);
-      if bytes_read > 0 then
-         total_bytes = total_bytes + bytes_read;
-   end;
+   bytes_read = read(sock._fd, addr(buffer), length(buffer));
 
    if bytes_read < 0 then do;
      signal condition(socket_error) set oncode(get_errno());
      return(bytes_read);
    end;
-
-   if total_bytes > 0 then 
-      buffer = substr(buffer, 1, total_bytes);
-   return(total_bytes);
+   if bytes_read > 0 then 
+      buffer = substr(buffer, 1, bytes_read);
+   return(bytes_read);
  end socket_read;
 
  close_socket: proc(sock) returns(fixed bin(31));

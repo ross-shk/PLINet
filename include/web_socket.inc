@@ -53,8 +53,8 @@
    options(linkage(system)) external('bind_to_port');
  
  dcl connect entry (
-   pointer,     /* host */
-   port_t,      /* port */
+   pointer,      /* host */
+   port_t,       /* port */
    socket_fd_t,  /* socket file descriptor */
    fixed bin(31) /* address family */
  ) returns(fixed bin(31))  /* socket descriptor */
@@ -70,7 +70,7 @@
 
  dcl receive entry (
    socket_fd_t,  /* socket descriptor */
-   pointer,     /* buffer */
+   pointer,      /* buffer */
    size_t,       /* length */
    flags_t       /* flags */
  ) returns(size_t)  /* num of bytes received  */

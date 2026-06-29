@@ -34,7 +34,7 @@
    put skip list('Client connected');
 
    /* read what the client sent */
-   bytes = socket_receive(client, buffer, 0);
+   bytes = socket_read(client, buffer);
    if bytes < 0 then do;
      put skip list('socket_read failed');
      stop;
