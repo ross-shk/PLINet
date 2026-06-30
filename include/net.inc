@@ -21,7 +21,14 @@
    like conncb, 
    fixed bin(31), 
    fixed bin(31), 
-   fixed bin(31));
+   fixed bin(31)
+ );
+
+ dcl netconnect entry (
+   like conncb,
+   char(16) varying,
+   port_t
+ );
  
  dcl netdial entry (
    like conncb,
