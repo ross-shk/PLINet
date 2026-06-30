@@ -187,9 +187,8 @@
 
    begin;
      c_host = substr(hostname, 1, length(hostname)) || '00'x;
-     put skip;  /* initializes glibc, possible Iron Spring bug */
-     rc = resolve_hostname(addr(c_host), sock._family,
-          addr(ip_buf), length(ip_buf));
+     rc = resolve_hostname(addr(c_host), sock._family, 
+       addr(ip_buf), length(ip_buf));
 
      if rc < 0 then do;
        signal condition(socket_error) set oncode(get_errno());
