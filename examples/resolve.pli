@@ -1,30 +1,18 @@
+
  main: proc options(main);
- %include socket_bridge;
+ %include socket;
 
+   dcl sock like socket_t;
    dcl hostname char(256) varying init('www.example.com');
-   dcl family   fixed bin(31) init(2);  /* AF.INET */
-   dcl ip_buf   char(64) init((64)'00'x);
-   dcl rc       fixed bin(31);
-   dcl null_pos fixed bin(31);
 
-   put skip list('Resolving hostname:', hostname);
-
-   begin;
-     dcl c_host char(length(hostname) + 1);
-     c_host = substr(hostname, 1, length(hostname)) || '00'x;
-     rc = resolve_hostname(addr(c_host), family,
-          addr(ip_buf), length(ip_buf));
-   end;
-
-   if rc < 0 then do;
-     put skip list('Resolution failed, errno =', get_errno());
+   on condition(socket_error) begin;
+     put skip list('Resolution failed, errno =', oncode());
      stop;
    end;
 
-   null_pos = index(ip_buf, '00'x);
-   if null_pos = 0 then
-     null_pos = length(ip_buf) + 1;
+   call new_socket(sock, AF.INET, TYPE.STREAM, 0);
+   call socket_resolve(sock, hostname);
 
-   put skip list('Resolved to:', substr(ip_buf, 1, null_pos - 1));
+   put skip list('Resolved', hostname, 'to', trim(sock._host));
 
- end main;
+ end;
