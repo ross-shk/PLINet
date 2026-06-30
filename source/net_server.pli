@@ -15,43 +15,43 @@
  * limitations under the License.
  */
 
- net: package exports(net_listen, net_accept);
+ net: package exports(netlisten, netaccept);
 
- %include net_bridge;
- %include net_errors;
+ %include netbridge;
+ %include neterrors;
 
- net_listen: proc(conn, port, backlog);
+ netlisten: proc(conn, port, backlog);
    dcl conn    like conncb;
    dcl port    port_t;
    dcl backlog backlog_t;
 
    if bind(sock._fd, port, sock._family, INADDR.ANY) < 0 then do;
-     signal condition(net_error) set oncode(get_errno());
+     signal condition(neterror) set oncode(get_errno());
      return;
    end;
 
    if listen(sock._fd, backlog) < 0 then do;
-     signal condition(net_error) set oncode(get_errno());
+     signal condition(neterror) set oncode(get_errno());
      return;
    end;
 
    sock._port = port;
    sock._connected = '1'b;
- end net_listen;
+ end netlisten;
 
- net_accept: proc(server, client) returns(fixed bin(31));
+ netaccept: proc(server, client) returns(fixed bin(31));
    dcl server like conncb;
    dcl client like conncb;
    dcl client_fd conn_t;
 
    client_fd = accept(server._fd);
    if client_fd < 0 then do;
-     signal condition(net_error) set oncode(get_errno());
+     signal condition(neterror) set oncode(get_errno());
      return;
    end;
 
     client._fd = client_fd;
     client._connected = '1'b;
- end net_accept;
+ end netaccept;
 
  end net;

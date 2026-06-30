@@ -1,5 +1,5 @@
  main: proc options(main);
- %include net_server;
+ %include netserver;
 
    dcl server    like conncb;
    dcl client    like conncb;
@@ -10,33 +10,33 @@
    dcl bytes     size_t;
 
    on attention begin;
-     call net_close(server);
-     call net_close(client);
+     call netclose(server);
+     call netclose(client);
      goto done;
    end;
 
-   on condition(net_error) begin;
+   on condition(neterror) begin;
      put skip list('Socket error, code =', oncode());
      goto done;
    end;
    
     /* create socket */
-    call net_new(server, AF.INET, TYPE.STREAM, 0);
+    call netnew(server, AF.INET, TYPE.STREAM, 0);
 
     /* bind and listen */
-    call net_listen(server, port, backlog);
+    call netlisten(server, port, backlog);
 
    put skip list('Server listening on port', port);
 
    /* accept one client */
-   call net_accept(server, client);
+   call netaccept(server, client);
 
    put skip list('Client connected');
 
    /* read what the client sent */
-   bytes = net_read(client, buffer);
+   bytes = netread(client, buffer);
    if bytes < 0 then do;
-     put skip list('net_read failed');
+     put skip list('netread failed');
      stop;
    end;
 
@@ -45,17 +45,17 @@
      put skip list('Received:', message);
 
      /* echo it back */
-     bytes = net_write(client, message);
+     bytes = netwrite(client, message);
      if bytes < 0 then do;
-       put skip list('net_write failed');
+       put skip list('netwrite failed');
        stop;
      end;
 
      put skip list('Echoed back');
    end;
 
-   call net_close(client);
-   call net_close(server);
+   call netclose(client);
+   call netclose(server);
 
  done:
    put skip list('Server shut down');

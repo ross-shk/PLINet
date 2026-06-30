@@ -17,13 +17,13 @@
 
  %include net;
 
- dcl net_listen entry (
+ dcl netlisten entry (
    like conn_t,
    port_t,
    backlog_t
  );
 
- dcl net_accept entry (
+ dcl netaccept entry (
    like conn_t,
    like conn_t
  );

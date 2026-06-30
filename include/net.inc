@@ -17,50 +17,50 @@
 
  %include type_defs;
 
- dcl net_new entry (
+ dcl netnew entry (
    like conncb, 
    fixed bin(31), 
    fixed bin(31), 
    fixed bin(31));
  
- dcl net_dial entry (
+ dcl netdial entry (
    like conncb,
    char(*) varying,
    port_t
  );
 
- dcl net_send entry (
+ dcl netsend entry (
    like conncb,
    char(*) varying,
    flags_t
  ) returns(size_t);
 
- dcl net_write entry (
+ dcl netwrite entry (
    like conncb,
    char(*) varying
  ) returns(size_t);
  
- dcl net_receive entry (
+ dcl netreceive entry (
    like conncb,
    char(*),  
    flags_t
  ) returns(size_t);
 
- dcl net_read entry (
+ dcl netread entry (
    like conncb,
    char(*)
  ) returns(size_t);
 
- dcl net_close entry (
+ dcl netclose entry (
    like conncb
  ) returns(fixed bin(31));
 
- dcl net_shutdown entry (
+ dcl netshutdown entry (
    like conncb,
    shut_how_t  /* 0=read, 1=write, 2=both */
  ) returns(fixed bin(31));
 
- dcl net_resolve entry (
+ dcl netresolve entry (
    like conncb,
    char(*) varying
  );

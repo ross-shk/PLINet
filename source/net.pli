@@ -14,33 +14,33 @@
  * limitations under the License.
  */
 
- net: package exports(net_dial, net_send, net_receive,
-   net_read, net_write, net_close, net_shutdown, 
-   net_new, net_resolve);
+ net: package exports(netdial, netsend, netreceive,
+   netread, netwrite, netclose, netshutdown, 
+   netnew, netresolve);
 
- %include net_bridge;
- %include net_errors;
+ %include netbridge;
+ %include neterrors;
 
- net_new: proc(conn, family, type, flag);
+ netnew: proc(conn, family, type, flag);
    dcl conn like conncb;
    dcl (family, type, flag) fixed bin(31);
 
    sock._fd = socket(family, type, flag);
    if sock._fd < 0 then do;
-     signal condition(net_error) set oncode(get_errno());
+     signal condition(neterror) set oncode(get_errno());
      return;
    end;
    sock._family = family;
    sock._type = type;
    sock._flag = flag;
- end net_new;
+ end netnew;
 
- net_dial: proc(conn, host, port);
+ netdial: proc(conn, host, port);
    dcl conn like conncb;
    dcl host char(*) varying;
    dcl port port_t;
 
-    if is_hostname(host) then call net_resolve(conn, host);
+    if is_hostname(host) then call netresolve(conn, host);
 
     begin;
       dcl status fixed bin(31);
@@ -50,7 +50,7 @@
 
      status = connect(addr(c_host), port, sock._fd, sock._family);
      if status < 0 then do;
-       signal condition(net_error) set oncode(get_errno());
+       signal condition(neterror) set oncode(get_errno());
        return;
      end;
    end;
@@ -65,9 +65,9 @@
       return(length(host) ^=
         length(translate(host, '', letters)));
     end is_hostname;
- end net_dial;
+ end netdial;
 
- net_send: proc(conn, request, flags) returns(size_t);
+ netsend: proc(conn, request, flags) returns(size_t);
    dcl conn like conncb;
    dcl request char(*) varying;
    dcl flags flags_t;
@@ -89,13 +89,13 @@
    end;
 
    if bytes_sent < 0 then do;
-     signal condition(net_error) set oncode(get_errno());
+     signal condition(neterror) set oncode(get_errno());
      return(bytes_sent);
    end;
    return(bytes_sent);
- end net_send;
+ end netsend;
 
- net_receive: proc(conn, response, flags) returns(size_t);
+ netreceive: proc(conn, response, flags) returns(size_t);
    dcl conn like conncb;
    dcl response char(*);   
    dcl flags flags_t;
@@ -105,15 +105,15 @@
    bytes_received = receive(sock._fd, addr(response), 
       length(response), flags);
    if bytes_received < 0 then do;
-     signal condition(net_error) set oncode(get_errno());
+     signal condition(neterror) set oncode(get_errno());
      return(bytes_received);
    end;
    if bytes_received > 0 then 
       response = substr(response, 1, bytes_received);
    return(bytes_received);
- end net_receive; 
+ end netreceive; 
 
- net_write: proc(conn, buffer) returns(size_t);
+ netwrite: proc(conn, buffer) returns(size_t);
    dcl conn like conncb;
    dcl buffer char(*) varying;
 
@@ -134,13 +134,13 @@
     end;
 
     if bytes_written < 0 then do;
-      signal condition(net_error) set oncode(get_errno());
+      signal condition(neterror) set oncode(get_errno());
       return(bytes_written);
     end;
    return(bytes_written);
- end net_write;
+ end netwrite;
 
- net_read: proc(conn, buffer) returns(size_t);
+ netread: proc(conn, buffer) returns(size_t);
    dcl conn like conncb;
    dcl buffer char(*);
    dcl bytes_read size_t;
@@ -148,15 +148,15 @@
    bytes_read = read(sock._fd, addr(buffer), length(buffer));
 
    if bytes_read < 0 then do;
-     signal condition(net_error) set oncode(get_errno());
+     signal condition(neterror) set oncode(get_errno());
      return(bytes_read);
    end;
    if bytes_read > 0 then 
       buffer = substr(buffer, 1, bytes_read);
    return(bytes_read);
- end net_read;
+ end netread;
 
- net_close: proc(conn) returns(fixed bin(31));
+ netclose: proc(conn) returns(fixed bin(31));
    dcl conn like conncb;
 
    dcl err_code fixed bin(31) init(0);
@@ -164,28 +164,28 @@
    if sock._fd > 0 then do;
      err_code = close(sock._fd);
      if err_code < 0 then do;
-       signal condition(net_error) set oncode(get_errno());
+       signal condition(neterror) set oncode(get_errno());
        return(err_code);
      end;
      sock._connected = '0'b;
    end;
    return(err_code);
- end net_close;
+ end netclose;
 
- net_shutdown: proc(conn, how) returns(fixed bin(31));
+ netshutdown: proc(conn, how) returns(fixed bin(31));
    dcl conn like conncb;
    dcl how shut_how_t;
    dcl err fixed bin(31);
 
    err = shutdown(sock._fd, how);
    if err < 0 then do;
-     signal condition(net_error) set oncode(get_errno());
+     signal condition(neterror) set oncode(get_errno());
      return(err);
    end;
    return(err);
- end net_shutdown;
+ end netshutdown;
 
- net_resolve: proc(conn, hostname);
+ netresolve: proc(conn, hostname);
    dcl conn like conncb;
    dcl hostname char(*) varying;
 
@@ -201,7 +201,7 @@
        addr(ip_buf), length(ip_buf));
 
      if rc < 0 then do;
-       signal condition(net_error) set oncode(get_errno());
+       signal condition(neterror) set oncode(get_errno());
        return;
      end;
    end;
@@ -210,6 +210,6 @@
    if null_pos = 0 then null_pos = length(ip_buf) + 1;
 
    sock._host = substr(ip_buf, 1, null_pos - 1);
- end net_resolve;
+ end netresolve;
 
  end net;

@@ -10,7 +10,7 @@
    dcl bytes    size_t;
 
    on attention begin;
-     call net_close(conn);
+     call netclose(conn);
      put skip list('Client shut down');
      stop;
    end;
@@ -20,19 +20,19 @@
 
    put skip list('Connecting to', trim(host), port);
 
-   call net_new(conn, AF.INET, TYPE.STREAM, 0);
-   call net_dial(conn, host, port);
+   call netnew(conn, AF.INET, TYPE.STREAM, 0);
+   call netdial(conn, host, port);
    put skip list('Connected');
 
-   bytes = net_write(conn, request);
+   bytes = netwrite(conn, request);
    put skip list('Sent', bytes, 'bytes');
 
-   bytes = net_read(conn, response);
+   bytes = netread(conn, response);
    if bytes > 0 then
      put skip list('Received:', substr(response, 1, bytes));
    else
      put skip list('No response received');
 
-   call net_close(conn);
+   call netclose(conn);
    put skip list('Client done');
  end main;

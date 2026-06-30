@@ -15,4 +15,4 @@
  * limitations under the License.
  */
 
- dcl net_error condition;
+ dcl neterror condition;
