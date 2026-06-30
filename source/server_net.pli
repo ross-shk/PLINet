@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
- net: package exports(net_listen, server_accept);
+ net: package exports(net_listen, net_accept);
 
  %include net_bridge;
  %include net_errors;
@@ -39,7 +39,7 @@
    sock._connected = '1'b;
  end net_listen;
 
- server_accept: proc(server, client) returns(fixed bin(31));
+ net_accept: proc(server, client) returns(fixed bin(31));
    dcl server like net_t;
    dcl client like net_t;
    dcl client_fd conn_t;
@@ -52,6 +52,6 @@
 
     client._fd = client_fd;
     client._connected = '1'b;
- end server_accept;
+ end net_accept;
 
  end net;

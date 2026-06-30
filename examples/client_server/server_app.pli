@@ -29,7 +29,7 @@
    put skip list('Server listening on port', port);
 
    /* accept one client */
-   call server_accept(server, client);
+   call net_accept(server, client);
 
    put skip list('Client connected');
 

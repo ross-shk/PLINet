@@ -23,7 +23,7 @@
    backlog_t
  );
 
- dcl server_accept entry (
+ dcl net_accept entry (
    like conn_t,
    like conn_t
  );
