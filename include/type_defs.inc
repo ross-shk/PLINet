@@ -41,7 +41,7 @@
        2 ANY       fixed bin(31) init(0),
        2 BROADCAST fixed bin(31) init(-1);
 
- dcl 1 net_t aligned based,
+ dcl 1 conncb aligned based,
        2 _fd        conn_t,
        2 _host      char(256) init(''),
        2 _port      port_t init(0),

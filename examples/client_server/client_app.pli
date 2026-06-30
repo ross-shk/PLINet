@@ -2,7 +2,7 @@
 
  %include net;
 
-   dcl conn     like net_t;
+   dcl conn     like conncb;
    dcl host     char(256);
    dcl port     fixed bin(31) init(8090);
    dcl request  char(256) varying;

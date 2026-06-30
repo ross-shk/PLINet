@@ -22,7 +22,7 @@
  %include net_errors;
 
  net_new: proc(conn, family, type, flag);
-   dcl conn like net_t;
+   dcl conn like conncb;
    dcl (family, type, flag) fixed bin(31);
 
    sock._fd = socket(family, type, flag);
@@ -36,7 +36,7 @@
  end net_new;
 
  net_dial: proc(conn, host, port);
-   dcl conn like net_t;
+   dcl conn like conncb;
    dcl host char(*) varying;
    dcl port port_t;
 
@@ -68,7 +68,7 @@
  end net_dial;
 
  net_send: proc(conn, request, flags) returns(size_t);
-   dcl conn like net_t;
+   dcl conn like conncb;
    dcl request char(*) varying;
    dcl flags flags_t;
 
@@ -96,7 +96,7 @@
  end net_send;
 
  net_receive: proc(conn, response, flags) returns(size_t);
-   dcl conn like net_t;
+   dcl conn like conncb;
    dcl response char(*);   
    dcl flags flags_t;
 
@@ -114,7 +114,7 @@
  end net_receive; 
 
  net_write: proc(conn, buffer) returns(size_t);
-   dcl conn like net_t;
+   dcl conn like conncb;
    dcl buffer char(*) varying;
 
    dcl bytes_written fixed bin(31) init(0);
@@ -141,7 +141,7 @@
  end net_write;
 
  net_read: proc(conn, buffer) returns(size_t);
-   dcl conn like net_t;
+   dcl conn like conncb;
    dcl buffer char(*);
    dcl bytes_read size_t;
 
@@ -157,7 +157,7 @@
  end net_read;
 
  net_close: proc(conn) returns(fixed bin(31));
-   dcl conn like net_t;
+   dcl conn like conncb;
 
    dcl err_code fixed bin(31) init(0);
    
@@ -173,7 +173,7 @@
  end net_close;
 
  net_shutdown: proc(conn, how) returns(fixed bin(31));
-   dcl conn like net_t;
+   dcl conn like conncb;
    dcl how shut_how_t;
    dcl err fixed bin(31);
 
@@ -186,7 +186,7 @@
  end net_shutdown;
 
  net_resolve: proc(conn, hostname);
-   dcl conn like net_t;
+   dcl conn like conncb;
    dcl hostname char(*) varying;
 
    dcl ip_buf char(64) init((64)'00'x); 

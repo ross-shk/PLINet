@@ -1,8 +1,8 @@
  main: proc options(main);
  %include net_server;
 
-   dcl server    like net_t;
-   dcl client    like net_t;
+   dcl server    like conncb;
+   dcl client    like conncb;
    dcl port      port_t init(8090);
    dcl backlog   backlog_t init(5);
    dcl buffer    char(4096);

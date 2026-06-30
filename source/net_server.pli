@@ -21,7 +21,7 @@
  %include net_errors;
 
  net_listen: proc(conn, port, backlog);
-   dcl conn    like net_t;
+   dcl conn    like conncb;
    dcl port    port_t;
    dcl backlog backlog_t;
 
@@ -40,8 +40,8 @@
  end net_listen;
 
  net_accept: proc(server, client) returns(fixed bin(31));
-   dcl server like net_t;
-   dcl client like net_t;
+   dcl server like conncb;
+   dcl client like conncb;
    dcl client_fd conn_t;
 
    client_fd = accept(server._fd);

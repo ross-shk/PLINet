@@ -22,7 +22,7 @@
      request  char(1024) varying,
      response char(1024),
      bytes    size_t,
-     conn     like net_t;
+     conn     like conncb;
 
    request =
        'GET / HTTP/1.1' || LINE_END ||

@@ -2,7 +2,7 @@
  main: proc options(main);
  %include net;
 
-   dcl conn like net_t;
+   dcl conn like conncb;
    dcl hostname char(256) varying init('www.example.com');
 
    on condition(net_error) begin;

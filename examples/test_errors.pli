@@ -21,7 +21,7 @@
 
    dcl host       char(256);
    dcl port       fixed bin(31);
-   dcl conn       like net_t;
+   dcl conn       like conncb;
    dcl request    char(256) varying;
    dcl response   char(4096);
    dcl bytes      size_t;
