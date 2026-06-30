@@ -18,12 +18,12 @@
  %include net;
 
  dcl create_server entry (
-   like net_t,
+   like conn_t,
    port_t,
    backlog_t
  );
 
  dcl server_accept entry (
-   like net_t,
-   like net_t
+   like conn_t,
+   like conn_t
  );

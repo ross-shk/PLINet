@@ -42,7 +42,7 @@
  server_accept: proc(server, client) returns(fixed bin(31));
    dcl server like net_t;
    dcl client like net_t;
-   dcl client_fd net_fd_t;
+   dcl client_fd conn_t;
 
    client_fd = accept(server._fd);
    if client_fd < 0 then do;
