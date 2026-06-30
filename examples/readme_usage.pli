@@ -22,19 +22,19 @@
      request  char(1024) varying,
      response char(1024),
      bytes    size_t,
-     sock     like net_t;
+     conn     like net_t;
 
    request =
        'GET / HTTP/1.1' || LINE_END ||
        'Host: 127.0.0.1:' || '8080' || LINE_END ||
        'Connection: close' || LINE_END || LINE_END;
    
-   call net_new(sock, AF.INET, TYPE.STREAM, 0); 
-   call net_connect(sock, '127.0.0.1', 8080);
-   bytes = net_send(sock, request, 0);
-   bytes = net_receive(sock, response, 0);
+   call net_new(conn, AF.INET, TYPE.STREAM, 0); 
+   call net_connect(conn, '127.0.0.1', 8080);
+   bytes = net_send(conn, request, 0);
+   bytes = net_receive(conn, response, 0);
 
    put skip list('Response ', substr(response, 1, bytes));
 
-   call net_close(sock); 
+   call net_close(conn); 
  end;

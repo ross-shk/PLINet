@@ -20,8 +20,8 @@
  %include net_bridge;
  %include net_errors;
 
- create_server: proc(sock, port, backlog);
-   dcl sock    like net_t;
+ create_server: proc(conn, port, backlog);
+   dcl conn    like net_t;
    dcl port    port_t;
    dcl backlog backlog_t;
 

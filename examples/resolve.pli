@@ -2,7 +2,7 @@
  main: proc options(main);
  %include net;
 
-   dcl sock like net_t;
+   dcl conn like net_t;
    dcl hostname char(256) varying init('www.example.com');
 
    on condition(net_error) begin;
@@ -10,8 +10,8 @@
      stop;
    end;
 
-   call net_new(sock, AF.INET, TYPE.STREAM, 0);
-   call net_resolve(sock, hostname);
+   call net_new(conn, AF.INET, TYPE.STREAM, 0);
+   call net_resolve(conn, hostname);
 
    put skip list('Resolved', hostname, 'to', trim(sock._host));
 

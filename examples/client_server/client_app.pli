@@ -2,7 +2,7 @@
 
  %include net;
 
-   dcl sock     like net_t;
+   dcl conn     like net_t;
    dcl host     char(256);
    dcl port     fixed bin(31) init(8090);
    dcl request  char(256) varying;
@@ -10,7 +10,7 @@
    dcl bytes    size_t;
 
    on attention begin;
-     call net_close(sock);
+     call net_close(conn);
      put skip list('Client shut down');
      stop;
    end;
@@ -20,19 +20,19 @@
 
    put skip list('Connecting to', trim(host), port);
 
-   call net_new(sock, AF.INET, TYPE.STREAM, 0);
-   call net_connect(sock, host, port);
+   call net_new(conn, AF.INET, TYPE.STREAM, 0);
+   call net_connect(conn, host, port);
    put skip list('Connected');
 
-   bytes = net_write(sock, request);
+   bytes = net_write(conn, request);
    put skip list('Sent', bytes, 'bytes');
 
-   bytes = net_read(sock, response);
+   bytes = net_read(conn, response);
    if bytes > 0 then
      put skip list('Received:', substr(response, 1, bytes));
    else
      put skip list('No response received');
 
-   call net_close(sock);
+   call net_close(conn);
    put skip list('Client done');
  end main;

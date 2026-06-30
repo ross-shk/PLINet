@@ -23,7 +23,7 @@
    dcl request    char(2048) varying;
    dcl (bytes_sent, bytes_received) size_t;
    dcl response   char(2048);
-   dcl sock like net_t;
+   dcl conn like net_t;
 
    host = '127.0.0.1';  /* or host = 'localhost'; */
    port = 8080;
@@ -33,16 +33,16 @@
        'Connection: close' || LINE_END || LINE_END;
    put skip list("REQUEST: " || LINE_END, trim(char(request)));
    
-   call net_new(sock, AF.INET, TYPE.STREAM, 0);
-   call net_connect(sock, host, port);
+   call net_new(conn, AF.INET, TYPE.STREAM, 0);
+   call net_connect(conn, host, port);
    put skip list("       CONNECTED...");
 
-   bytes_sent = net_write(sock, request);
+   bytes_sent = net_write(conn, request);
    put skip list(' >> bytes sent ', '' || trim(char(bytes_sent)));
 
-   bytes_received = net_read(sock, response);
+   bytes_received = net_read(conn, response);
    put skip list(' >> bytes received ', bytes_received);
    put skip list(' >> response ', substr(response, 1, bytes_received));
 
-   call net_close(sock); 
+   call net_close(conn); 
  end main;
