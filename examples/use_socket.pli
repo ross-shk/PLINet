@@ -25,7 +25,7 @@
    dcl response   char(2048);
    dcl sock like socket_t;
 
-   host = '127.0.0.1';
+   host = '127.0.0.1';  /* or host = 'localhost'; */
    port = 8080;
    request =
        'GET / HTTP/1.1' || LINE_END ||
@@ -37,10 +37,9 @@
    call socket_connect(sock, host, port);
    put skip list("       CONNECTED...");
 
-   /* bytes_sent = socket_send(sock, request, 0); */
    bytes_sent = socket_write(sock, request);
    put skip list(' >> bytes sent ', '' || trim(char(bytes_sent)));
-   /* bytes_received = socket_receive(sock, response, 0); */
+
    bytes_received = socket_read(sock, response);
    put skip list(' >> bytes received ', bytes_received);
    put skip list(' >> response ', substr(response, 1, bytes_received));

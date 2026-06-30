@@ -39,11 +39,14 @@
    dcl sock like socket_t;
    dcl host char(*) varying;
    dcl port port_t;
-   
+
+   if is_hostname() then call socket_resolve(sock, host);
+
    begin;
      dcl status fixed bin(31);
-     dcl c_host char(length(host));
-     c_host = substr(host, 1, length(host)) || '00'x;
+     dcl c_host char(256);
+
+     c_host = trim(substr(host, 1, length(host))) || '00'x;
 
      status = connect(addr(c_host), port, sock._fd, sock._family);
      if status < 0 then do;
@@ -52,9 +55,14 @@
      end;
    end;
 
-   sock._host = host;
-   sock._port = port; 
-   sock._connected = '1'b; 
+   sock._port = port;
+   sock._connected = '1'b;
+
+   is_hostname: proc() returns(bit(1));
+     dcl letters char(52) init(
+       'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz');
+     return(index(translate(host, '', letters), ''));
+   end is_hostname;
  end socket_connect;
 
  socket_send: proc(sock, request, flags) returns(size_t);

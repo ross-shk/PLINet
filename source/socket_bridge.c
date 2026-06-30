@@ -85,8 +85,7 @@ int connect_to_host(char *host, int port, int socket_fd, int af) {
   struct sockaddr_in addr = {0};
   addr.sin_family = af;
   addr.sin_port = htons(port);
-  if (inet_pton(af, host, &addr.sin_addr) <= 0)
-      return -1;
+  inet_pton(af, host, &addr.sin_addr);
 
-  return connect(socket_fd, (struct sockaddr*)&addr, sizeof(addr));
+  return connect(socket_fd, (struct sockaddr*)&addr, sizeof(addr)) ;
 }
