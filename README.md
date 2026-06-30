@@ -6,7 +6,7 @@ A socket library for PL/I with a C bridge, object-oriented wrappers, and PL/I co
 
 | File | Purpose |
 |------|---------|
-| `type_defs.inc` | Named types (`conn_t`, `port_t`, `buffer_t`, etc.) and the `conncb` structure |
+| `type_defs.inc` | Named types (`conncb`, `port_t`, `buffer_t`, etc.) and the `conncb` structure |
 | `net_bridge.inc` | C function external declarations (`socket`, `bind`, `listen`, ...) |
 | `net.pli` / `.inc` | Object-oriented client socket methods (`net_dial`, `net_send`, `net_receive`, `net_close`, `net_shutdown`, `socket_errno`) |
 | `net_server.pli` / `.inc` | Server socket methods (`net_listen`, `net_accept`, `server_error`) |

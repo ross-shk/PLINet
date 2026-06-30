@@ -42,7 +42,7 @@
  netaccept: proc(server, client) returns(fixed bin(31));
    dcl server like conncb;
    dcl client like conncb;
-   dcl client_fd conn_t;
+   dcl client_fd conncb;
 
    client_fd = accept(server._fd);
    if client_fd < 0 then do;

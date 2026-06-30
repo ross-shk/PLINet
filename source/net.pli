@@ -48,31 +48,31 @@
    dcl host char(*) varying;
    dcl port port_t;
 
-    if is_hostname(host) then call netresolve(conn, host);
+   if is_hostname(host) then call netresolve(conn, host);
 
-    begin;
-      dcl status fixed bin(31);
-      dcl c_host char(256);
+   begin;
+     dcl status fixed bin(31);
+     dcl c_host char(256);
 
-      c_host = trim(substr(host, 1, length(host))) || '00'x;
+     c_host = trim(substr(host, 1, length(host))) || '00'x;
 
-     status = connect(addr(c_host), port, sock._fd, sock._family);
-     if status < 0 then do;
-       signal condition(neterror) set oncode(get_errno());
-       return;
-     end;
+    status = connect(addr(c_host), port, sock._fd, sock._family);
+    if status < 0 then do;
+      signal condition(neterror) set oncode(get_errno());
+      return;
+    end;
    end;
 
    sock._port = port;
    sock._connected = '1'b;
 
-    is_hostname: proc(host) returns(bit(1));
-      dcl host char(*) varying;
-      dcl letters char(52) init(
-        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz');
-      return(length(host) ^=
-        length(translate(host, '', letters)));
-    end is_hostname;
+   is_hostname: proc(host) returns(bit(1));
+     dcl host char(*) varying;
+     dcl letters char(52) init(
+       'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz');
+     return(length(host) ^=
+       length(translate(host, '', letters)));
+   end is_hostname;
  end netdial;
 
  netsend: proc(conn, request, flags) returns(size_t);

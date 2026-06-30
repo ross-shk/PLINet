@@ -36,24 +36,24 @@
     options(linkage(system)) external('get_errno');
 
  dcl shutdown entry (
-   conn_t,   /* socket descriptor */
+   conncb,   /* socket descriptor */
    shut_how_t     /* 0=read, 1=write, 2=both */
  ) returns(fixed bin(31))  /* status */
    options(linkage(system)) external('shutdown');
 
  dcl accept entry (
-   conn_t  /* server socket descriptor */
- ) returns(conn_t)  /* client socket descriptor */
+   conncb  /* server socket descriptor */
+ ) returns(conncb)  /* client socket descriptor */
    options(linkage(system)) external('default_accept');
 
  dcl listen entry (
-    conn_t,  /* socket descriptor */
+    conncb,  /* socket descriptor */
     backlog_t     /* backlog */
  ) returns(fixed bin(31))  /* status */
    options(linkage(system)) external('listen');
 
  dcl bind entry (
-   conn_t,    /* socket descriptor */
+   conncb,    /* socket descriptor */
    port_t,         /* port */
    fixed bin(31),  /* family */
    fixed bin(31)   /* in-address */
@@ -71,13 +71,13 @@
  dcl connect entry (
    pointer,      /* host */
    port_t,       /* port */
-   conn_t,  /* socket file descriptor */
+   conncb,       /* socket file descriptor */
    fixed bin(31) /* address family */
  ) returns(fixed bin(31))  /* socket descriptor */
    options(linkage(system)) external('connect_to_host');
 
  dcl send entry (
-   conn_t,  /* socket descriptor */
+   conncb,  /* socket descriptor */
    pointer,      /* request */
    size_t,       /* length */
    flags_t       /* flags */
@@ -85,7 +85,7 @@
    options(linkage(system)) external('send');
 
  dcl receive entry (
-   conn_t,  /* socket descriptor */
+   conncb,  /* socket descriptor */
    pointer,      /* buffer */
    size_t,       /* length */
    flags_t       /* flags */
@@ -93,20 +93,20 @@
    options(linkage(system)) external('recv');
 
  dcl read entry (
-   conn_t,  /* socket descriptor */
+   conncb,  /* socket descriptor */
    pointer,      /* buffer */
    size_t        /* length */
  ) returns(size_t)  /* num of bytes read */
    options(linkage(system)) external('read');
 
  dcl write entry (
-   conn_t,  /* socket descriptor */
+   conncb,  /* socket descriptor */
    pointer,      /* buffer */
    size_t        /* length */
  ) returns(size_t)  /* num of bytes written */
    options(linkage(system)) external('write');
 
  dcl close entry (
-   conn_t  /* socket descriptor */
+   conncb  /* socket descriptor */
  ) returns(fixed bin(31))  /* error code */
    options(linkage(system)) external('close');

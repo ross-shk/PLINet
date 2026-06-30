@@ -18,12 +18,12 @@
  %include net;
 
  dcl netlisten entry (
-   like conn_t,
+   like conncb,
    port_t,
    backlog_t
  );
 
  dcl netaccept entry (
-   like conn_t,
-   like conn_t
+   like conncb,
+   like conncb
  );
