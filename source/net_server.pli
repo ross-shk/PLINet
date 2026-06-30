@@ -18,7 +18,7 @@
  net: package exports(netlisten, netaccept);
 
  %include net_bridge;
- %include neterrors;
+ %include net_errors;
 
  netlisten: proc(conn, port, backlog);
    dcl conn    like conncb;
