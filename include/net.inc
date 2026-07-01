@@ -1,3 +1,3 @@
  
  %include net_base;
- %include server_net;
+ %include net_server;
