@@ -34,7 +34,7 @@
        'Connection: close' || LINE_END || LINE_END;
    put skip list("REQUEST: " || LINE_END, trim(char(request)));
    
-   call netdial(conn, '127.0.0.1:8080', AF.INET, TYPE.STREAM);
+   call netdial(conn, '127.0.0.1:8080', AF.INET);
    put skip list("       CONNECTED...");
 
    bytes_sent = netwrite(conn, request);

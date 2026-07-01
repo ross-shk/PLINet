@@ -57,7 +57,7 @@
    conn._connected = '1'b;
  end netconnect;
 
- netdial: proc(conn, url, family, type);
+ netdial: proc(conn, url, family);
    dcl conn like conncb;
    dcl url char(*) varying;
    dcl family fixed bin(31);
@@ -67,7 +67,7 @@
    dcl port port_t;
    call split_url;
 
-   call netnew(conn, family, type, 0);
+   call netnew(conn, family, TYPE.STREAM, 0);
    if is_hostname then call netresolve(conn, host);
 
    begin;
@@ -89,7 +89,6 @@
    
    split_url: proc;
      dcl pos fixed bin(31);
-
      pos = index(url, ':');
 
      if pos = 0 then do;
@@ -100,13 +99,13 @@
          host = substr(url, 1, pos-1);
          port = fixed(substr(url, pos+1));
      end;
-   end split_url;
+   end;
 
    is_hostname: proc returns(bit(1));
      dcl letters char(52) init(
        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz');
      return(index(translate(url, '', letters), ''));
-   end is_hostname;
+   end;
  end netdial;
 
  netsend: proc(conn, request, flags) returns(size_t);
