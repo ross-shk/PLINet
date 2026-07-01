@@ -31,18 +31,18 @@
        'GET / HTTP/1.1' || LINE_END ||
        'Host: ' || trim(host) || ":" || trim(port) || LINE_END ||
        'Connection: close' || LINE_END || LINE_END;
-   put skip list("REQUEST: " || LINE_END, trim(char(request)));
+   display("REQUEST: " || LINE_END || trim(char(request)));
    
    call netnew(conn, AF.INET, TYPE.STREAM, 0);
    call netconnect(conn, host, port);
-   put skip list("       CONNECTED...");
+   display("       CONNECTED...");
 
    bytes_sent = netwrite(conn, request);
-   put skip list(' >> bytes sent ', '' || trim(char(bytes_sent)));
+   display(' >> bytes sent ' || trim(char(bytes_sent)));
 
    bytes_received = netread(conn, response);
-   put skip list(' >> bytes received ', bytes_received);
-   put skip list(' >> response ', substr(response, 1, bytes_received));
+   display(' >> bytes received ' || bytes_received);
+   display(' >> response ' || substr(response, 1, bytes_received));
 
    call netclose(conn); 
  end main;
