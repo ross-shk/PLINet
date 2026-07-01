@@ -26,7 +26,7 @@
 
  dcl netconnect entry (
    like conncb,
-   char(16) varying,
+   char(*) varying,
    port_t
  );
  
