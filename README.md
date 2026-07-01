@@ -42,14 +42,40 @@ A socket library for PL/I with a C bridge, object-oriented wrappers, and PL/I co
  end;
 ```
 
-## Build (32-bit ELF)
+## Build & Install
+
+Requires Iron Spring PL/I (`plic`), `gcc` with `-m32`, and `libprf` (32-bit).
+
+```sh
+make
+sudo make install              # or: make install PREFIX=$HOME/.local
+```
+
+## Run an Example
+
+After `make install`, compile and link against the installed library:
 
 ```sh
 cd examples
-./build.sh use_net.pli
+
+plic -C -dELF -ew -O readall_test.pli    \
+  $(pkg-config --cflags net)              \   # -i/usr/local/include
+  -o readall_test.o
+
+gcc -m32 -no-pie -z muldefs               \   # 32-bit ELF target
+  -Wl,--oformat=elf32-i386                \
+  -o readall_test readall_test.o          \
+  $(pkg-config --libs net)                   # -L/usr/local/lib -lnet -lprf
 ```
 
-Requires Iron Spring PL/I (`plic`), `gcc` with `-m32`, and `libprf` (32-bit).
+`pkg-config` handles the library paths only. The remaining flags are toolchain requirements (Iron Spring PL/I's 32-bit ELF target) and don't change between projects.
+
+Or build directly in-tree with the existing script (no install needed):
+
+```sh
+cd examples
+./build.sh readall_test.pli
+```
 
 ## Layers
 
