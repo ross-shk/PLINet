@@ -13,6 +13,6 @@
    call netnew(conn, AF.INET, TYPE.STREAM, 0);
    call netresolve(conn, hostname);
 
-   put skip list('Resolved', hostname, 'to', trim(conn._host));
+   put skip list('Resolved', trim(conn._host), 'to', trim(conn._ip));
 
  end;
