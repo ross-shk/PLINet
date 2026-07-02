@@ -19,23 +19,29 @@
  %include net;
 
    declare
-     request  char(1024) varying,
-     response char(1024),
+     request  char(256) varying,
+     response char(2048),
+     host     char(256) varying init('example.com:80'),
      bytes    size_t,
      conn     like conncb;
 
-   /* assuming some server is running on localhost at 8080 */
+   on condition(neterror) begin;
+     display('Networking error, code = ' || oncode());
+     goto cleanup;
+   end;
+
    request =
-       'GET / HTTP/1.1' || LINE_END ||
-       'Host: 127.0.0.1:' || '8080' || LINE_END ||
+       'GET / HTTP/1.1'    || LINE_END ||
+       'Host: ' || host    || LINE_END ||
        'Connection: close' || LINE_END || LINE_END;
    
-   call netdial(conn, '127.0.0.1:8080', AF.INET);
+   call netdial(conn, host, AF.INET);
 
-   call netwriteall(conn, request);
+   call netwriteall(conn, request); 
    bytes = netreadall(conn, response);
 
-   put skip list('Response ', substr(response, 1, bytes));
-
+   display('Response ' || substr(response, 1, bytes));
+ 
+ cleanup:
    call netclose(conn); 
  end;

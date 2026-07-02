@@ -69,10 +69,10 @@
    call netnew(conn, family, TYPE.STREAM, 0);
    if is_hostname then do;
      call netresolve(conn, host);
-     call netconnect(conn, conn._host, port);
+     call netconnect(conn, conn._ip, port);
    end;
    else
-     call netconnect(conn, host, port);
+     call netconnect(conn, conn._ip, port);
 
    split_url: proc;
      dcl pos fixed bin(31);
@@ -91,7 +91,7 @@
    is_hostname: proc returns(bit(1));
      dcl letters char(52) init(
        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz');
-     return(index(translate(url, '', letters), ''));
+     return(translate(host, '', letters) ^= host);
    end;
  end netdial;
 
